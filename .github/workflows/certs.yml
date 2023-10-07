@@ -1,0 +1,24 @@
+# This workflow will create app certificates
+
+name: Create app certs
+
+on: 
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Update the appxmanifest before build by setting the per-channel values set in the matrix.
+    - name: Change Version
+      run: |
+        keytool -genkeypair -v -keystore racingcarscontrollerandroid.keystore -alias key -keyalg RSA -keysize 2048 -validity 10000
+
