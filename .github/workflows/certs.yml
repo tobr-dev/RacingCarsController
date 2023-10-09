@@ -17,11 +17,17 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Update the appxmanifest before build by setting the per-channel values set in the matrix.
     - name: Gen Key
+      env:
+        KEY_PASS: ${{ secrets.SIGNING_KEY_PASS }}
       run: |
         dir
-        keytool -genkeypair -v -keystore racingcarscontrollerandroid.keystore -alias key -keyalg RSA -keysize 2048 -validity 10000 -keypass Tajn344 -storepass Tajn344
+        keytool -genkeypair -noprompt -v \
+          -keystore racingcarscontrollerandroid.keystore \
+          -alias key \
+          -dname "CN=ClientName, OU=OrganizationUnit, O=Organization, L=Locality, S=State, C=CountryCode" \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -keypass:env KEY_PASS -storepass:env KEY_PASS
         dir
         
 
