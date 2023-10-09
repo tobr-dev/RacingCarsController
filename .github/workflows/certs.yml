@@ -21,8 +21,8 @@ jobs:
       env:
         KEY_PASS: ${{ secrets.SIGNING_KEY_PASS }}
       run: |
-        cd RacingCarsControllerAndroid
         keytool -genkeypair -noprompt -v -keystore racingcarscontrollerandroid.keystore -alias key -dname "CN=ClientName, OU=OrganizationUnit, O=Organization, L=Locality, S=State, C=CountryCode" -keyalg RSA -keysize 2048 -validity 10000 -keypass:env KEY_PASS -storepass:env KEY_PASS
+        move /Y racingcarscontrollerandroid.keystore RacingCarsControllerAndroid\racingcarscontrollerandroid.keystore
 
     - name: Git push
       run: |
