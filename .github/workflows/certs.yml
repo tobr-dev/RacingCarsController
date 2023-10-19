@@ -21,8 +21,11 @@ jobs:
       env:
         KEY_PASS: ${{ secrets.SIGNING_KEY_PASS }}
       run: |
-        keytool -genkeypair -noprompt -v -keystore racingcarscontrollerandroid.keystore -alias key -dname "CN=ClientName, OU=OrganizationUnit, O=Organization, L=Locality, S=State, C=CountryCode" -keyalg RSA -keysize 2048 -validity 10000 -keypass:env KEY_PASS -storepass:env KEY_PASS
+        keytool -genkeypair -noprompt -v -keystore racingcarscontrollerandroid.keystore -alias key -dname "CN=DryForest" -keyalg RSA -keysize 2048 -validity 10000 -keypass:env KEY_PASS -storepass:env KEY_PASS
+        keytool -importkeystore -noprompt -v -srckeystore racingcarscontrollerandroid.keystore -srcalias key -destkeystore GitHubActionsWorkflow.pfx -deststoretype PKCS12
         Move-Item -Force racingcarscontrollerandroid.keystore RacingCarsControllerAndroid
+        echo [System.Convert]::ToBase64String( [IO.File]::ReadAllBytes("GitHubActionsWorkflow.pfx") )
+        Remove-Item GitHubActionsWorkflow.pfx
 
     - name: Git push
       run: |
